@@ -10,6 +10,7 @@ let usuarioX = parseInt(sessionStorage.getItem('userX'), 10);
 let usuarioY = parseInt(sessionStorage.getItem('userY'), 10);
 
 function dibujarCuadrante() {
+    console.log("Dibujando cuadrante");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
     ctx.moveTo(250, 0);
@@ -24,12 +25,15 @@ function dibujarCuadrante() {
 }
 
 function filtrarAmigos() {
+    console.log("Filtrando amigos, excluyendo a:", nombreUsuario);
     return amigos.filter(amigo => amigo !== nombreUsuario);
 }
 
 function actualizarInstrucciones() {
-    if (indiceActual < filtrarAmigos().length) {
-        instrucciones.textContent = `Coloca un punto para ${filtrarAmigos()[indiceActual]}`;
+    const amigosFiltrados = filtrarAmigos();
+    console.log("Actualizando instrucciones. Índice actual:", indiceActual, "Amigos filtrados:", amigosFiltrados.length);
+    if (indiceActual < amigosFiltrados.length) {
+        instrucciones.textContent = `Coloca un punto para ${amigosFiltrados[indiceActual]}`;
     } else {
         instrucciones.textContent = "¡Gracias por completar las evaluaciones!";
         agregarPuntoAutopercepcion();
@@ -40,6 +44,7 @@ function actualizarInstrucciones() {
 }
 
 function agregarPuntoAutopercepcion() {
+    console.log("Agregando punto de autopercepción");
     ctx.fillStyle = '#000000'; // Color negro para el punto de autopercepción
     ctx.beginPath();
     ctx.arc(usuarioX, usuarioY, 5, 0, 2 * Math.PI);
@@ -49,6 +54,7 @@ function agregarPuntoAutopercepcion() {
 }
 
 function mostrarTodosLosPuntos() {
+    console.log("Mostrando todos los puntos", evaluaciones);
     evaluaciones.forEach(eval => {
         ctx.fillStyle = eval.color;
         ctx.beginPath();
@@ -59,11 +65,13 @@ function mostrarTodosLosPuntos() {
 }
 
 canvas.addEventListener('click', function(event) {
-    if (indiceActual < filtrarAmigos().length) {
+    const amigosFiltrados = filtrarAmigos();
+    console.log("Canvas click event. Índice actual:", indiceActual, "Amigos filtrados:", amigosFiltrados.length);
+    if (indiceActual < amigosFiltrados.length) {
         const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
-        const amigoActual = filtrarAmigos()[indiceActual];
+        const amigoActual = amigosFiltrados[indiceActual];
         ctx.fillStyle = colores[amigos.indexOf(amigoActual)];
         ctx.beginPath();
         ctx.arc(x, y, 5, 0, 2 * Math.PI);
@@ -76,6 +84,7 @@ canvas.addEventListener('click', function(event) {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("Document loaded. Nombre de usuario:", nombreUsuario);
     nombreUsuario = sessionStorage.getItem('nombreUsuario');
     dibujarCuadrante();
     actualizarInstrucciones();
