@@ -33,6 +33,9 @@ function actualizarInstrucciones() {
     } else {
         instrucciones.textContent = "¡Gracias por completar las evaluaciones!";
         agregarPuntoAutopercepcion();
+        setTimeout(() => {
+            alert("Has completado todas las evaluaciones. ¡Gracias!");
+        }, 500);
     }
 }
 
@@ -60,12 +63,13 @@ canvas.addEventListener('click', function(event) {
         const rect = canvas.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
-        ctx.fillStyle = colores[amigos.indexOf(filtrarAmigos()[indiceActual])];
+        const amigoActual = filtrarAmigos()[indiceActual];
+        ctx.fillStyle = colores[amigos.indexOf(amigoActual)];
         ctx.beginPath();
         ctx.arc(x, y, 5, 0, 2 * Math.PI);
         ctx.fill();
-        evaluaciones.push({ nombre: filtrarAmigos()[indiceActual], x: x, y: y, color: ctx.fillStyle });
-        sendEvaluation(nombreUsuario, filtrarAmigos()[indiceActual], x, y, ctx.fillStyle);
+        evaluaciones.push({ nombre: amigoActual, x: x, y: y, color: ctx.fillStyle });
+        sendEvaluation(nombreUsuario, amigoActual, x, y, ctx.fillStyle);
         indiceActual++;
         actualizarInstrucciones();
     }
