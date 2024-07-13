@@ -65,6 +65,7 @@ canvas.addEventListener('click', function(event) {
         ctx.arc(x, y, 5, 0, 2 * Math.PI);
         ctx.fill();
         evaluaciones.push({ nombre: filtrarAmigos()[indiceActual], x: x, y: y, color: ctx.fillStyle });
+        sendEvaluation(nombreUsuario, filtrarAmigos()[indiceActual], x, y, ctx.fillStyle);
         indiceActual++;
         actualizarInstrucciones();
     }
@@ -77,10 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 async function getEvaluations(nombre) {
-  const response = await fetch(`https://script.google.com/macros/s/AKfycbwoLafU77absaDMA0kjKIy5lYLOQ8et_ITsZwz6UlWtMGvIrJMWOEpuIr-u_aOK0y9G/exec?nombre=${nombre}`);
-  if (!response.ok) {
-    throw new Error('Error al recuperar las evaluaciones');
-  }
-  const data = await response.json();
-  return data;
+  // Fetching evaluations from Firestore (if needed for display)
+  // Placeholder for getting evaluations
 }

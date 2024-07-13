@@ -52,23 +52,17 @@ canvas.addEventListener('click', function(event) {
 });
 
 async function sendEvaluation(nombre, evaluador, x, y, color) {
-  const data = {nombre, evaluador, x, y, color};
-  try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbwoLafU77absaDMA0kjKIy5lYLOQ8et_ITsZwz6UlWtMGvIrJMWOEpuIr-u_aOK0y9G/exec', {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    if (!response.ok) {
-      throw new Error('Error al enviar la evaluación');
+    try {
+        await addDoc(collection(db, "evaluations"), {
+            nombre: nombre,
+            evaluador: evaluador,
+            x: x,
+            y: y,
+            color: color
+        });
+        alert("Evaluación enviada con éxito");
+    } catch (error) {
+        console.error("Error al enviar la evaluación:", error);
+        alert("Hubo un problema al enviar la evaluación. Por favor, intenta de nuevo.");
     }
-    const result = await response.json();
-    console.log('Evaluación enviada con éxito:', result);
-    return result;
-  } catch (error) {
-    console.error('Error al enviar la evaluación:', error);
-    alert('Hubo un problema al enviar la evaluación. Por favor, intenta de nuevo.');
-  }
 }
