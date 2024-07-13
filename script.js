@@ -1,3 +1,41 @@
+// script.js
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyA5gOZ1iR2u614Yao7H53ACdfTx7PbsFSE",
+    authDomain: "feralidad-4e663.firebaseapp.com",
+    projectId: "feralidad-4e663",
+    storageBucket: "feralidad-4e663.appspot.com",
+    messagingSenderId: "272219235817",
+    appId: "1:272219235817:web:7e76ee459e32e0bb2f9778",
+    measurementId: "G-3F722VNET0"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function sendEvaluation(nombre, evaluador, x, y, color) {
+    try {
+        await addDoc(collection(db, "evaluations"), {
+            nombre: nombre,
+            evaluador: evaluador,
+            x: x,
+            y: y,
+            color: color
+        });
+        console.log("Evaluación enviada con éxito");
+    } catch (error) {
+        console.error("Error al enviar la evaluación:", error);
+    }
+}
+
+// Hacer sendEvaluation accesible globalmente
+window.sendEvaluation = sendEvaluation;
+
 const nombreForm = document.getElementById('nombreForm');
 const nombreInput = document.getElementById('nombre');
 const canvas = document.getElementById('cuadrante');
@@ -5,6 +43,7 @@ const ctx = canvas.getContext('2d');
 let usuario = { nombre: "", x: null, y: null };
 
 function dibujarCuadrante() {
+    console.log("Dibujando cuadrante");
     canvas.style.display = 'block';
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.beginPath();
@@ -50,19 +89,3 @@ canvas.addEventListener('click', function(event) {
         }, 1000);
     }
 });
-
-async function sendEvaluation(nombre, evaluador, x, y, color) {
-    try {
-        await addDoc(collection(db, "evaluations"), {
-            nombre: nombre,
-            evaluador: evaluador,
-            x: x,
-            y: y,
-            color: color
-        });
-        alert("Evaluación enviada con éxito");
-    } catch (error) {
-        console.error("Error al enviar la evaluación:", error);
-        alert("Hubo un problema al enviar la evaluación. Por favor, intenta de nuevo.");
-    }
-}

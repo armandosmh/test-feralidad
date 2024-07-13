@@ -1,3 +1,5 @@
+// amigos.js
+
 const amigos = ["César", "Paola", "Ana", "May", "Pedro", "Javier", "Armando"];
 const colores = ["#FF6347", "#4682B4", "#32CD32", "#FFD700", "#6A5ACD", "#FF69B4", "#FFA500"]; // Un color para cada amigo
 let evaluaciones = [];
@@ -26,7 +28,9 @@ function dibujarCuadrante() {
 
 function filtrarAmigos() {
     console.log("Filtrando amigos, excluyendo a:", nombreUsuario);
-    return amigos.filter(amigo => amigo !== nombreUsuario);
+    const amigosFiltrados = amigos.filter(amigo => amigo !== nombreUsuario);
+    console.log("Amigos filtrados:", amigosFiltrados);
+    return amigosFiltrados;
 }
 
 function actualizarInstrucciones() {
@@ -72,14 +76,18 @@ canvas.addEventListener('click', function(event) {
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
         const amigoActual = amigosFiltrados[indiceActual];
+        console.log("Amigo actual:", amigoActual, "Color:", colores[amigos.indexOf(amigoActual)]);
         ctx.fillStyle = colores[amigos.indexOf(amigoActual)];
         ctx.beginPath();
         ctx.arc(x, y, 5, 0, 2 * Math.PI);
         ctx.fill();
         evaluaciones.push({ nombre: amigoActual, x: x, y: y, color: ctx.fillStyle });
+        console.log("Evaluación añadida:", evaluaciones);
         sendEvaluation(nombreUsuario, amigoActual, x, y, ctx.fillStyle);
         indiceActual++;
         actualizarInstrucciones();
+    } else {
+        console.log("No hay más amigos para evaluar");
     }
 });
 
