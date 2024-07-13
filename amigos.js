@@ -75,3 +75,12 @@ document.addEventListener('DOMContentLoaded', function() {
     dibujarCuadrante();
     actualizarInstrucciones();
 });
+
+async function getEvaluations(nombre) {
+  const response = await fetch(`https://script.google.com/macros/s/AKfycbwoLafU77absaDMA0kjKIy5lYLOQ8et_ITsZwz6UlWtMGvIrJMWOEpuIr-u_aOK0y9G/exec?nombre=${nombre}`);
+  if (!response.ok) {
+    throw new Error('Error al recuperar las evaluaciones');
+  }
+  const data = await response.json();
+  return data;
+}
